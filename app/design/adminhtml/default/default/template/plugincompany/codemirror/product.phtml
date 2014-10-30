@@ -1,0 +1,123 @@
+<?php if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/enabled')){ ?>
+    <script type="text/javascript">
+        delete window['console'];
+        var textareas = [
+            <?php if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/product')){ ?>
+                {
+                    title: 'description'
+                },
+                {
+                    title: 'short_description'
+                },
+            <?php } if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/cms_page')){ ?>
+                {
+                    title: 'page_layout_update_xml'
+                },
+                {
+                    title: 'page_custom_layout_update_xml'
+                },
+            <?php } if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/categories')){ ?>
+                {
+                    title: 'group_4description'
+                },
+                {
+                    title: 'group_6custom_layout_update'
+                },
+            <?php } if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/transactional')){ ?>
+                {
+                    title: 'template_text'
+                }
+            <?php } ?>
+        ];
+
+        jQuery('document').ready(function() {
+            initTextareas();
+
+        <?php if (Mage::app()->getRequest()->getControllerName() == 'catalog_category') { ?>
+            Ajax.Responders.register({
+                onComplete: function () {
+                    initTextareas();
+                }
+            });
+        <?php };?>
+
+        updateElementAtCursor = function (el, value, win) {
+            console.log(jQuery(el).attr('id'));
+            var replaced = false;
+            jQuery(textareas).each(function (k, v) {
+                if (v.title == jQuery(el).attr('id')) {
+                    textareas[k].editor.replaceSelection(value);
+                    replaced = true;
+                    return false;
+                }
+            });
+            if (replaced) {
+                return false;
+            }
+
+            if (win == undefined) {
+                win = window.self;
+            }
+            if (document.selection) {
+                el.focus();
+                sel = win.document.selection.createRange();
+                sel.text = value;
+            } else if (el.selectionStart || el.selectionStart == '0') {
+                var startPos = el.selectionStart;
+                var endPos = el.selectionEnd;
+                el.value = el.value.substring(0, startPos) + value + el.value.substring(endPos, el.value.length);
+            } else {
+                el.value += value;
+            }
+            return false;
+        }
+        })
+        ;
+
+        function initTextareas() {
+            jQuery(textareas).each(function (k, v) {
+                if (jQuery('#' + v.title).length == 0) {
+                    textareas[k] = false;
+                    return;
+                }
+                var editor = CodeMirror.fromTextArea(document.getElementById(v.title), {
+                    lineNumbers: true,
+                    styleActiveLine: true,
+                    lineWrapping: true,
+                    matchBrackets: true,
+                    autoCloseBrackets: true,
+                    autoCloseTags: true,
+                    extraKeys: {"Ctrl-J": "toMatchingTag", "Ctrl-Space": "autocomplete"},
+                    mode: 'htmlmixed'
+                });
+                editor.on('change', function (cm) {
+                    if (jQuery('#' + v.title).val() != cm.getValue()) {
+                        jQuery('#' + v.title).val(cm.getValue());
+                    }
+                });
+                 var charWidth = editor.defaultCharWidth(), basePadding = 4;
+                  editor.on("renderLine", function(cm, line, elt) {
+                    var off = CodeMirror.countColumn(line.text, null, cm.getOption("tabSize")) * charWidth;
+                    elt.style.textIndent = "-" + off + "px";
+                    elt.style.paddingLeft = (basePadding + off) + "px";
+                  });
+                  editor.refresh();
+
+                textareas[k].editor = editor;
+            })
+
+            setInterval(function () {
+                jQuery(textareas).each(function (k, v) {
+                    if (v) {
+
+                        if (jQuery('#' + v.title).val() != v.editor.getValue()) {
+                            v.editor.setValue(jQuery('#' + v.title).val())
+                        }
+                        v.editor.refresh();
+                    }
+                })
+            }, 300);
+        }
+    </script>
+    )
+<?php } ?>

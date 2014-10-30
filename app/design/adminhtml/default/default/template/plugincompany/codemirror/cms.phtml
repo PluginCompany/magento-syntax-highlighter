@@ -1,0 +1,120 @@
+<?php
+if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/enabled')) {
+    $controller = Mage::app()->getRequest()->getControllerName();
+
+    switch($controller){
+        case 'cms_page':
+            if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/cms_page')){
+                $editorField = 'page_content';
+            }
+            break;
+        case 'cms_block':
+            if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/cms_block')){
+                $editorField = 'block_content';
+            }
+            break;
+        case 'newsletter_template':
+            if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/newsletter')){
+                $editorField = 'text';
+            }
+            break;
+    }
+    if ($editorField) {
+
+    ?>
+    <script type="text/javascript">
+        delete window['console'];
+        var textArea;
+        var editor;
+        var oldvalue;
+
+    jQuery('document').ready(function() {
+        textArea = jQuery('#<?php echo $editorField; ?>');
+
+        editor = CodeMirror.fromTextArea(document.getElementById('<?php echo $editorField; ?>'), {
+                 lineNumbers: true,
+                styleActiveLine: true,
+                lineWrapping: true,
+                matchBrackets: true,
+                autoCloseBrackets: true,
+                autoCloseTags:true,
+                extraKeys: {"Ctrl-Space": "autocomplete"},
+                mode: 'htmlmixed'
+        });
+
+
+        editor.on('change',function(cm) {
+            if(textArea.val() != cm.getValue()) {
+                textArea.val(cm.getValue());
+            }
+        });
+
+          var charWidth = editor.defaultCharWidth(), basePadding = 4;
+          editor.on("renderLine", function(cm, line, elt) {
+            var off = CodeMirror.countColumn(line.text, null, cm.getOption("tabSize")) * charWidth;
+            elt.style.textIndent = "-" + off + "px";
+            elt.style.paddingLeft = (basePadding + off) + "px";
+          });
+          editor.refresh();
+
+        setInterval(function() {
+            editor.refresh();
+            checkTextFieldChanges();
+        },100);
+
+        jQuery('#toggle<?php echo $editorField; ?>').click(function()
+        {
+            if(jQuery(editor.getWrapperElement()).is(':visible')){
+                jQuery(editor.getWrapperElement()).hide();
+                var interv = setInterval(function() {
+                    if(jQuery('#<?php echo $editorField;?>_parent').not(':visible')){
+                        jQuery('#<?php echo $editorField;?>_parent').show();
+                    }else{
+                        clearInterval(interv);
+                    }
+                },300)
+            }else{
+                jQuery(editor.getWrapperElement()).show();
+            }
+        })
+
+        function checkTextFieldChanges() {
+            if(oldvalue != textArea.val()) {
+                oldvalue = textArea.val();
+                if(oldvalue != editor.getValue()) {
+                    editor.setValue(oldvalue);
+                }
+            }
+
+        }
+
+
+    updateElementAtCursor = function(el, value, win) {
+        if(jQuery(el).attr('id')=='<?php echo $editorField; ?>'){
+            editor.replaceSelection(value);
+            return false;
+        }
+
+        if (win == undefined) {
+            win = window.self;
+        }
+        if (document.selection) {
+            el.focus();
+            sel = win.document.selection.createRange();
+            sel.text = value;
+        } else if (el.selectionStart || el.selectionStart == '0') {
+            var startPos = el.selectionStart;
+            var endPos = el.selectionEnd;
+            el.value = el.value.substring(0, startPos) + value + el.value.substring(endPos, el.value.length);
+        } else {
+            el.value += value;
+        }
+       return false;
+    }
+
+
+    });
+
+    </script>
+
+<?php }} ?>

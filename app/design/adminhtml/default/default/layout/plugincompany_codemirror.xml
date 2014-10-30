@@ -1,0 +1,116 @@
+<?xml version="1.0"?>
+<layout>
+   <adminhtml_cms_block_edit>
+       <update handle="plugincompany_codemirror" />
+        <reference name="content" after="-">
+            <block type="core/template" template="plugincompany/codemirror/cms.phtml"/>
+        </reference>
+    </adminhtml_cms_block_edit>
+    <adminhtml_cms_page_edit>
+        <update handle="plugincompany_codemirror" />
+        <reference name="content" after="-">
+            <block type="core/template" template="plugincompany/codemirror/cms.phtml"/>
+            <block type="core/template" template="plugincompany/codemirror/product.phtml"/>
+        </reference>
+    </adminhtml_cms_page_edit>
+    <adminhtml_catalog_product_edit>
+        <update handle="plugincompany_codemirror" />
+        <reference name="content" after="-">
+            <block type="core/template" template="plugincompany/codemirror/product.phtml"/>
+        </reference>
+    </adminhtml_catalog_product_edit>
+
+    <adminhtml_newsletter_template_new>
+        <update handle="plugincompany_codemirror" />
+        <reference name="content" after="-">
+            <block type="core/template" template="plugincompany/codemirror/cms.phtml"/>
+        </reference>
+    </adminhtml_newsletter_template_new>
+
+    <adminhtml_newsletter_template_edit>
+        <update handle="plugincompany_codemirror" />
+        <reference name="content" after="-">
+            <block type="core/template" template="plugincompany/codemirror/cms.phtml"/>
+        </reference>
+    </adminhtml_newsletter_template_edit>
+
+    <adminhtml_catalog_category_edit>
+        <update handle="plugincompany_codemirror" />
+        <reference name="content" after="-">
+            <block type="core/template" template="plugincompany/codemirror/product.phtml"/>
+        </reference>
+    </adminhtml_catalog_category_edit>
+
+    <adminhtml_system_email_template_edit>
+        <update handle="plugincompany_codemirror" />
+        <reference name="content" after="-">
+            <block type="core/template" template="plugincompany/codemirror/product.phtml"/>
+        </reference>
+    </adminhtml_system_email_template_edit>
+
+    <plugincompany_codemirror>
+        <reference name="head">
+            <action method="addJs">
+                <script>plugincompany/jquery.min.js</script>
+            </action>
+            <action method="addJs">
+                <script>codemirror/codemirror.js</script>
+            </action>
+            <action method="addItem">
+                <type>js_css</type>
+                <name>codemirror/show-hint.css</name>
+            </action>
+            <action method="addItem">
+                <type>js_css</type>
+                <name>codemirror/codemirror.css</name>
+            </action>
+            <action method="addItem">
+                <type>js_css</type>
+                <name>codemirror/monokai.css</name>
+            </action>
+            <action method="addJs">
+                <script>codemirror/show-hint.js</script>
+            </action>
+            <action method="addJs">
+                <script>codemirror/matchtags.js</script>
+            </action>
+            <action method="addJs">
+                <script>codemirror/matchbrackets.js</script>
+            </action>
+            <action method="addJs">
+                <script>codemirror/javascript-hint.js</script>
+            </action>
+            <action method="addJs">
+                <script>codemirror/html-hint.js</script>
+            </action>
+            <action method="addJs">
+                <script>codemirror/css-hint.js</script>
+            </action>
+            <action method="addJs">
+                <script>codemirror/closetag.js</script>
+            </action>
+            <action method="addJs">
+                <script>codemirror/closebrackets.js</script>
+            </action>
+            <action method="addJs">
+                <script>codemirror/css.js</script>
+            </action>
+            <action method="addJs">
+                <script>codemirror/javascript.js</script>
+            </action>
+            <action method="addJs">
+                <script>codemirror/xml.js</script>
+            </action>
+            <action method="addJs">
+                <script>codemirror/xml-fold.js</script>
+            </action>
+            <action method="addJs">
+                <script>codemirror/xml-hint.js</script>
+            </action>
+            <action method="addJs">
+                <script>codemirror/htmlmixed.js</script>
+            </action>
+        </reference>
+
+    </plugincompany_codemirror>
+</layout>
