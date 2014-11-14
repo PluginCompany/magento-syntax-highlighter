@@ -1,0 +1,169 @@
+<?php if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/enabled')){
+?>
+    <script type="text/javascript">
+        delete window['console'];
+
+        var wyiwygDefault = false;
+        <?php if(Mage::getStoreConfig('cms/wysiwyg/enabled') == 'enabled'){ ?>
+            wyiwygDefault = true;
+        <?php } ?>
+
+        var SHtextareas = <?php echo $this->getTextAreas(); ?>
+
+        jQuery('document').ready(function() {
+            if(wyiwygDefault && getHasTinyMCE()) {
+                //wait for tinyMCE init
+                var tinyMCEcheck=setInterval(function () {
+                    if(tinyMCE.activeEditor) {
+                        initTextareas();
+                        clearInterval(tinyMCEcheck);
+                    }
+                }, 200);
+            }else{
+                //init immeditately
+                initTextareas();
+            }
+
+            Ajax.Responders.register({
+                onComplete: function (response) {
+                    var url = response.url;
+                    if(url.indexOf('catalog_category/edit')){
+                        initTextareas();
+                    }
+                }
+            });
+
+        updateElementAtCursor = function (el, value, win) {
+            var replaced = false;
+            jQuery(SHtextareas).each(function (k, v) {
+                if (v.title == jQuery(el).attr('id')) {
+                    SHtextareas[k].editor.replaceSelection(value);
+                    replaced = true;
+                    return false;
+                }
+            });
+            if (replaced) {
+                return false;
+            }
+
+            if (win == undefined) {
+                win = window.self;
+            }
+            if (document.selection) {
+                el.focus();
+                sel = win.document.selection.createRange();
+                sel.text = value;
+            } else if (el.selectionStart || el.selectionStart == '0') {
+                var startPos = el.selectionStart;
+                var endPos = el.selectionEnd;
+                el.value = el.value.substring(0, startPos) + value + el.value.substring(endPos, el.value.length);
+            } else {
+                el.value += value;
+            }
+            return false;
+        }
+        })
+        ;
+
+        function initTextareas() {
+            jQuery(SHtextareas).each(function (k, v) {
+                if (jQuery('#' + v.title).length == 0) {
+                    SHtextareas[k] = false;
+                    return;
+                }
+
+                //prevent double loading of codemirror in case of AJAX trigger
+                if(jQuery('#' + v.title).hasClass('codemirror-loaded')){
+                    return;
+                }else{
+                    jQuery('#' + v.title).addClass('codemirror-loaded');
+                }
+                var codeType = 'htmlmixed';
+                if(v.type) {
+                    codeType = v.type;
+                }
+                var editor = CodeMirror.fromTextArea(document.getElementById(v.title), {
+                    lineNumbers: true,
+                    styleActiveLine: true,
+                    lineWrapping: true,
+                    matchBrackets: true,
+                    autoCloseBrackets: true,
+                    autoCloseTags: true,
+                    extraKeys: {
+                        "Ctrl-J": "toMatchingTag",
+                        "Ctrl-Space": "autocomplete",
+                        "F11": function(cm) {
+                            cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                        },
+                        "Esc": function(cm) {
+                            if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                        }
+                    },
+                    styleActiveLine: true,
+                    matchTags: {bothTags: true},
+                    mode: codeType
+                });
+
+                var charWidth = editor.defaultCharWidth(), basePadding = 4;
+                editor.on("renderLine", function(cm, line, elt) {
+                    var off = CodeMirror.countColumn(line.text, null, cm.getOption("tabSize")) * charWidth;
+                    elt.style.textIndent = "-" + off + "px";
+                    elt.style.paddingLeft = (basePadding + off) + "px";
+                });
+                editor.refresh();
+
+                editor.on('change', function (cm) {
+                    if (jQuery('#' + v.title).val() != cm.getValue()) {
+                        jQuery('#' + v.title).val(cm.getValue());
+                    }
+                });
+
+                jQuery('#toggle' + v.title).click(function()
+                {
+                    jQuery('#' + v.title).hide();
+                    if(jQuery(editor.getWrapperElement()).is(':visible')){
+                        jQuery(editor.getWrapperElement()).hide();
+                        var interv = setInterval(function() {
+                            if(jQuery('#' + v.title + '_parent').not(':visible')){
+                                jQuery('#' + v.title + '_parent').show();
+                            }else{
+                                clearInterval(interv);
+                            }
+                        },300)
+                    }else{
+                        jQuery(editor.getWrapperElement()).show();
+                    }
+                })
+
+                if(wyiwygDefault && jQuery(document).find('#toggle' + v.title).length){
+                    editor.getWrapperElement().hide();
+                }
+
+                SHtextareas[k].editor = editor;
+            })
+
+            setInterval(function () {
+                jQuery(SHtextareas).each(function (k, v) {
+                    if (v) {
+                        if (jQuery('#' + v.title).val() != v.editor.getValue()) {
+                            v.editor.setValue(jQuery('#' + v.title).val())
+                        }
+                        v.editor.refresh();
+                    }
+                })
+            }, 300);
+        }
+
+        function getHasTinyMCE() {
+            var hastiny = false;
+            jQuery(SHtextareas).each(function(k,v) {
+                if(jQuery('#toggle' + v.title).length) {
+                    hastiny = true;
+                    return false;
+                }
+            })
+            return hastiny;
+        }
+    </script>
+    
+<?php } ?>
