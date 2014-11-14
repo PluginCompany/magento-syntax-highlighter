@@ -2,7 +2,6 @@
     $controller = Mage::app()->getRequest()->getControllerName();
 ?>
     <script type="text/javascript">
-        delete window['console'];
         var textareas = [
             <?php
             //Catalog Product textfields
@@ -65,7 +64,6 @@
 
         if (typeof isCMSPage === 'undefined') {
             updateElementAtCursor = function (el, value, win) {
-                console.log(jQuery(el).attr('id'));
                 var replaced = false;
                 jQuery(textareas).each(function (k, v) {
                     if (v.title == jQuery(el).attr('id')) {
@@ -99,7 +97,6 @@
         ;
 
         function initTextareas() {
-            console.log('INITTEXT')
             jQuery(textareas).each(function (k, v) {
                 if (jQuery('#' + v.title).length == 0) {
                     textareas[k] = false;

@@ -23,7 +23,6 @@ if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group
 
     ?>
     <script type="text/javascript">
-        delete window['console'];
         var textArea;
         var editor;
         var oldvalue;
@@ -61,7 +60,6 @@ if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group
             //wait for tinyMCE init
             var tinyMCEcheck=setInterval(function () {
                     if(tinyMCE.activeEditor) {
-                        console.log('aa');
                         initCodemirrorEditor();
                         clearInterval(tinyMCEcheck);
                     }
