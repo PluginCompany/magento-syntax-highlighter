@@ -1,29 +1,50 @@
-<?php if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/enabled')){ ?>
+<?php if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/enabled')){
+    $controller = Mage::app()->getRequest()->getControllerName();
+?>
     <script type="text/javascript">
         delete window['console'];
         var textareas = [
-            <?php if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/product')){ ?>
+            <?php
+            //Catalog Product textfields
+            if($controller == 'catalog_product' && Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/product')){ ?>
                 {
                     title: 'description'
                 },
                 {
                     title: 'short_description'
                 },
-            <?php } if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/cms_page')){ ?>
+            <?php }
+            //CMS Page textfields
+            if($controller == 'cms_page' && Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/cms_page')){ ?>
                 {
                     title: 'page_layout_update_xml'
                 },
                 {
                     title: 'page_custom_layout_update_xml'
                 },
-            <?php } if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/categories')){ ?>
+            <?php }
+            //Catalog Category textfields
+            if($controller == 'catalog_category' && Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/categories')){ ?>
                 {
-                    title: 'group_4description'
+                    title: jQuery('[name*=\\[description\\]]').eq(0).attr('id')
                 },
                 {
-                    title: 'group_6custom_layout_update'
+                    title: jQuery('[name*=\\[custom_layout_update\\]]').eq(0).attr('id')
                 },
-            <?php } if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/transactional')){ ?>
+            <?php }
+            //Newsletter template textfields
+            if($controller == 'newsletter_template' && Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/newsletter')){ ?>
+                {
+                    title: 'template_styles',
+                    type: 'css'
+                },
+            <?php }
+            //Transactional e-mail textfields
+            if($controller == 'system_email_template' && Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/transactional')){ ?>
+                {
+                    title: 'template_styles',
+                    type: 'css'
+                },
                 {
                     title: 'template_text'
                 }
@@ -36,49 +57,57 @@
         <?php if (Mage::app()->getRequest()->getControllerName() == 'catalog_category') { ?>
             Ajax.Responders.register({
                 onComplete: function () {
-                    initTextareas();
+                    if(!jQuery('.CodeMirror').length)
+                        initTextareas();
                 }
             });
         <?php };?>
 
-        updateElementAtCursor = function (el, value, win) {
-            console.log(jQuery(el).attr('id'));
-            var replaced = false;
-            jQuery(textareas).each(function (k, v) {
-                if (v.title == jQuery(el).attr('id')) {
-                    textareas[k].editor.replaceSelection(value);
-                    replaced = true;
+        if (typeof isCMSPage === 'undefined') {
+            updateElementAtCursor = function (el, value, win) {
+                console.log(jQuery(el).attr('id'));
+                var replaced = false;
+                jQuery(textareas).each(function (k, v) {
+                    if (v.title == jQuery(el).attr('id')) {
+                        textareas[k].editor.replaceSelection(value);
+                        replaced = true;
+                        return false;
+                    }
+                });
+                if (replaced) {
                     return false;
                 }
-            });
-            if (replaced) {
+
+                if (win == undefined) {
+                    win = window.self;
+                }
+                if (document.selection) {
+                    el.focus();
+                    sel = win.document.selection.createRange();
+                    sel.text = value;
+                } else if (el.selectionStart || el.selectionStart == '0') {
+                    var startPos = el.selectionStart;
+                    var endPos = el.selectionEnd;
+                    el.value = el.value.substring(0, startPos) + value + el.value.substring(endPos, el.value.length);
+                } else {
+                    el.value += value;
+                }
                 return false;
             }
-
-            if (win == undefined) {
-                win = window.self;
-            }
-            if (document.selection) {
-                el.focus();
-                sel = win.document.selection.createRange();
-                sel.text = value;
-            } else if (el.selectionStart || el.selectionStart == '0') {
-                var startPos = el.selectionStart;
-                var endPos = el.selectionEnd;
-                el.value = el.value.substring(0, startPos) + value + el.value.substring(endPos, el.value.length);
-            } else {
-                el.value += value;
-            }
-            return false;
         }
         })
         ;
 
         function initTextareas() {
+            console.log('INITTEXT')
             jQuery(textareas).each(function (k, v) {
                 if (jQuery('#' + v.title).length == 0) {
                     textareas[k] = false;
                     return;
+                }
+                var codeType = 'htmlmixed';
+                if(v.type) {
+                    codeType = v.type;
                 }
                 var editor = CodeMirror.fromTextArea(document.getElementById(v.title), {
                     lineNumbers: true,
@@ -88,7 +117,7 @@
                     autoCloseBrackets: true,
                     autoCloseTags: true,
                     extraKeys: {"Ctrl-J": "toMatchingTag", "Ctrl-Space": "autocomplete"},
-                    mode: 'htmlmixed'
+                    mode: codeType
                 });
                 editor.on('change', function (cm) {
                     if (jQuery('#' + v.title).val() != cm.getValue()) {
