@@ -1,16 +1,17 @@
 <?php if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/enabled')){
 ?>
     <script type="text/javascript">
-        delete window['console'];
-
+        //get default wysiwyg setting
         var wyiwygDefault = false;
         <?php if(Mage::getStoreConfig('cms/wysiwyg/enabled') == 'enabled'){ ?>
             wyiwygDefault = true;
         <?php } ?>
 
+        //retrieve available text areas for page
         var SHtextareas = <?php echo $this->getTextAreas(); ?>
 
         jQuery('document').ready(function() {
+            //check if tinyMCE is available
             if(wyiwygDefault && getHasTinyMCE()) {
                 //wait for tinyMCE init
                 var tinyMCEcheck=setInterval(function () {
@@ -24,6 +25,7 @@
                 initTextareas();
             }
 
+            //reinit after catalog category ajax load
             Ajax.Responders.register({
                 onComplete: function (response) {
                     var url = response.url;
@@ -33,6 +35,7 @@
                 }
             });
 
+        //modified function for inserting variables and images in textfield
         updateElementAtCursor = function (el, value, win) {
             var replaced = false;
             jQuery(SHtextareas).each(function (k, v) {
@@ -65,9 +68,11 @@
         })
         ;
 
+        //init codemirror functionalty
         function initTextareas() {
             jQuery(SHtextareas).each(function (k, v) {
                 if (jQuery('#' + v.title).length == 0) {
+                    //if text area does not exist do nothing
                     SHtextareas[k] = false;
                     return;
                 }
@@ -78,10 +83,14 @@
                 }else{
                     jQuery('#' + v.title).addClass('codemirror-loaded');
                 }
+
+                //set codetype for editor
                 var codeType = 'htmlmixed';
                 if(v.type) {
                     codeType = v.type;
                 }
+
+                //init codemirror editor
                 var editor = CodeMirror.fromTextArea(document.getElementById(v.title), {
                     lineNumbers: true,
                     styleActiveLine: true,
@@ -104,6 +113,7 @@
                     mode: codeType
                 });
 
+                //add auto indent functionality
                 var charWidth = editor.defaultCharWidth(), basePadding = 4;
                 editor.on("renderLine", function(cm, line, elt) {
                     var off = CodeMirror.countColumn(line.text, null, cm.getOption("tabSize")) * charWidth;
@@ -112,12 +122,14 @@
                 });
                 editor.refresh();
 
+                //on change set value to original textfield
                 editor.on('change', function (cm) {
                     if (jQuery('#' + v.title).val() != cm.getValue()) {
                         jQuery('#' + v.title).val(cm.getValue());
                     }
                 });
 
+                //modified wysiwyg toggle function
                 jQuery('#toggle' + v.title).click(function()
                 {
                     jQuery('#' + v.title).hide();
@@ -142,6 +154,8 @@
                 SHtextareas[k].editor = editor;
             })
 
+            // interval for looking for changes in textarea.
+            // Unfortunately there is no textarea onchange event, so interval is needed.
             setInterval(function () {
                 jQuery(SHtextareas).each(function (k, v) {
                     if (v) {
@@ -154,6 +168,7 @@
             }, 300);
         }
 
+        //check if there are any tinyMCE enabled fields on the page
         function getHasTinyMCE() {
             var hastiny = false;
             jQuery(SHtextareas).each(function(k,v) {

@@ -7,6 +7,10 @@
  */
 class Plugincompany_Codemirror_Block_Codemirror extends Mage_Core_Block_Template
 {
+    /**
+     * returns JSON with codemirror enabled textarea fields.
+     * @return string
+     */
     public function getTextAreas()
     {
 
