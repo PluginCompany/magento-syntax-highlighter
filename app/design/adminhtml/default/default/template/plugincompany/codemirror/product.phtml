@@ -95,14 +95,6 @@
                         jQuery('#' + v.title).val(cm.getValue());
                     }
                 });
-                 var charWidth = editor.defaultCharWidth(), basePadding = 4;
-                  editor.on("renderLine", function(cm, line, elt) {
-                    var off = CodeMirror.countColumn(line.text, null, cm.getOption("tabSize")) * charWidth;
-                    elt.style.textIndent = "-" + off + "px";
-                    elt.style.paddingLeft = (basePadding + off) + "px";
-                  });
-                  editor.refresh();
-
                 textareas[k].editor = editor;
             })
 
@@ -119,5 +111,5 @@
             }, 300);
         }
     </script>
-    )
+    
 <?php } ?>
