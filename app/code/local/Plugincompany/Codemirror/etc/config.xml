@@ -53,6 +53,8 @@
                 <cms_block>1</cms_block>
                 <product>1</product>
                 <categories>1</categories>
+                <category_fields>custom_layout_update,description,meta_description,meta_keywords</category_fields>
+                <product_fields>custom_layout_update,description,in_depth,meta_description,meta_keyword,short_description</product_fields>
                 <newsletter>1</newsletter>
                 <transactional>1</transactional>
             </plugincompany_codemirror_group>

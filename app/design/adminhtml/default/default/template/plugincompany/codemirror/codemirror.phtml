@@ -28,10 +28,7 @@
             //reinit after catalog category ajax load
             Ajax.Responders.register({
                 onComplete: function (response) {
-                    var url = response.url;
-                    if(url.indexOf('catalog_category/edit')){
                         initTextareas();
-                    }
                 }
             });
 
@@ -141,7 +138,7 @@
                             }else{
                                 clearInterval(interv);
                             }
-                        },300)
+                        },100)
                     }else{
                         jQuery(editor.getWrapperElement()).show();
                     }
@@ -155,6 +152,7 @@
             })
 
             // interval for looking for changes in textarea.
+            // if changes are detected, codemirror editor is updated
             // Unfortunately there is no textarea onchange event, so interval is needed.
             setInterval(function () {
                 jQuery(SHtextareas).each(function (k, v) {
@@ -168,7 +166,7 @@
             }, 300);
         }
 
-        //check if there are any tinyMCE enabled fields on the page
+        //checks if there are any tinyMCE enabled fields on the page
         function getHasTinyMCE() {
             var hastiny = false;
             jQuery(SHtextareas).each(function(k,v) {
@@ -179,6 +177,59 @@
             })
             return hastiny;
         }
+
+        //Modified template control function for newsletter templates
+        //fixes issues with 'convert to plain text' functionality
+        if(typeof templateControl !== 'undefined'){
+            templateControl.stripTags = function() {
+                if(!window.confirm("Are you sure that you want to strip all tags?")) {
+                    return false;
+                }
+                if(this.isEditor()) {
+                    this.getEditor().turnOff();
+                    this.getEditor().getToggleButton().hide();
+                }
+                this.unconvertedText = $(this.id).value;
+                $('convert_button').hide();
+                $('convert_button_back').show();
+                $(this.id).value =  $(this.id).value.stripScripts().stripTags();
+                $('field_template_styles').hide();
+
+                //show codemirror editor
+                var textAreaId = this.id;
+                jQuery(SHtextareas).each(function(k,v) {
+                    if(v.title == textAreaId){
+                        v.editor.getWrapperElement().show();
+                    }
+                });
+
+                this.typeChange = true;
+                return false;
+            };
+
+            templateControl.unStripTags = function () {
+                $('convert_button').show();
+                $('convert_button_back').hide();
+                $(this.id).value =  this.unconvertedText;
+                if(this.isEditor()) {
+                    this.getEditor().turnOn();
+                    this.getEditor().getToggleButton().show();
+
+                    //hide codemirror editor
+                    var textAreaId = this.id;
+                    jQuery(SHtextareas).each(function(k,v) {
+                        if(v.title == textAreaId){
+                            v.editor.getWrapperElement().hide();
+                        }
+                    });
+                }
+
+                this.typeChange = false;
+                $('field_template_styles').show();
+                return false;
+            };
+        }
+
     </script>
     
 <?php } ?>

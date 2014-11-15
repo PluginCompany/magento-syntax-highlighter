@@ -43,26 +43,22 @@ class Plugincompany_Codemirror_Block_Codemirror extends Mage_Core_Block_Template
                 break;
             case 'catalog_product':
                 if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/product')){
-                    $editorFields = array(
-                        array(
-                            'title'=>'description'
-                        ),
-                        array(
-                            'title' => 'short_description'
-                        )
-                    );
+                    $editorFields = array();
+                    if ($fields = Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/product_fields')) {
+                        foreach(explode(',',$fields) as $field){
+                            $editorFields[] = array('title' => $field);
+                        }
+                    }
                 }
                 break;
             case 'catalog_category':
                 if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/categories')){
-                    $editorFields = array(
-                        array(
-                            'title'=> new Zend_Json_Expr("jQuery('[name*=\\\\[description\\\\]]').eq(0).attr('id')")
-                        ),
-                        array(
-                            'title'=> new Zend_Json_Expr("jQuery('[name*=\\\\[custom_layout_update\\\\]]').eq(0).attr('id')")
-                        ),
-                    );
+                    $editorFields = array();
+                    if ($fields = Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/category_fields')) {
+                        foreach(explode(',',$fields) as $field){
+                            $editorFields[] = array('title' => new Zend_Json_Expr("jQuery('[name*=\\\\[{$field}\\\\]]').eq(0).attr('id')"));
+                        }
+                    }
                 }
                 break;
             case 'newsletter_template':
