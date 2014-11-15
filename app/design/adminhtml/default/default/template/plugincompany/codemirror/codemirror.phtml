@@ -117,7 +117,6 @@
                     elt.style.textIndent = "-" + off + "px";
                     elt.style.paddingLeft = (basePadding + off) + "px";
                 });
-                editor.refresh();
 
                 //on change set value to original textfield
                 editor.on('change', function (cm) {
@@ -128,7 +127,7 @@
 
                 //modified wysiwyg toggle function
                 jQuery('#toggle' + v.title).click(function()
-                {
+           r    {
                     jQuery('#' + v.title).hide();
                     if(jQuery(editor.getWrapperElement()).is(':visible')){
                         jQuery(editor.getWrapperElement()).hide();
@@ -149,6 +148,9 @@
                 }
 
                 SHtextareas[k].editor = editor;
+                setTimeout(function() {
+                    editor.refresh();
+                },300)
             })
 
             // interval for looking for changes in textarea.
@@ -159,8 +161,8 @@
                     if (v) {
                         if (jQuery('#' + v.title).val() != v.editor.getValue()) {
                             v.editor.setValue(jQuery('#' + v.title).val())
+                            v.editor.refresh();
                         }
-                        v.editor.refresh();
                     }
                 })
             }, 300);
