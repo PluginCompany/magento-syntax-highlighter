@@ -17,7 +17,7 @@
 <config>
     <modules>
         <Plugincompany_Codemirror>
-            <version>0.1.0</version>
+            <version>1.0.0</version>
         </Plugincompany_Codemirror>
     </modules>
     <global>
