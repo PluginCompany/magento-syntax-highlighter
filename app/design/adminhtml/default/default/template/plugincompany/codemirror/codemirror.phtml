@@ -135,6 +135,7 @@
                     elt.style.paddingLeft = (basePadding + off) + "px";
                 });
 
+
                 //on change set value to original textfield
                 editor.on('change', function (cm) {
                     if (jQuery('#' + v.title).val() != cm.getValue()) {
@@ -183,6 +184,17 @@
                     }
                 })
             }, 300);
+
+            jQuery(document).ready(function() {
+                jQuery('.tab-item-link').on('click' ,function() {
+                    console.log('asdasdas');
+                    setTimeout(function() {
+                        jQuery(SHtextareas).each(function(k,v) {
+                            v.editor.refresh();
+                        })
+                    })
+                })
+            })
         }
 
         //checks if there are any tinyMCE enabled fields on the page
@@ -247,16 +259,7 @@
                 $('field_template_styles').show();
                 return false;
             };
-
-            jQuery('.tab-item-link').click(function() {
-                setTimeout(function() {
-                    jQuery(SHtextareas).each(function(k,v) {
-                        v.editor.refresh();
-                    })
-                })
-            })
         }
-
     </script>
     
 <?php } ?>
