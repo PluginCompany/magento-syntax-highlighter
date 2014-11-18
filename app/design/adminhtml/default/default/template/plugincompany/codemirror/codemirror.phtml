@@ -16,250 +16,261 @@
  */
 ?>
 <?php if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/enabled')){
-?>
+    ?>
     <script type="text/javascript">
-        //get default wysiwyg setting
-        var wyiwygDefault = false;
-        <?php if(Mage::getStoreConfig('cms/wysiwyg/enabled') == 'enabled'){ ?>
-            wyiwygDefault = true;
-        <?php } ?>
+    //get default wysiwyg setting
+    var wyiwygDefault = false;
+    <?php if(Mage::getStoreConfig('cms/wysiwyg/enabled') == 'enabled'){ ?>
+    wyiwygDefault = true;
+    <?php } ?>
 
-        //retrieve available text areas for page
-        var SHtextareas = <?php echo $this->getTextAreas(); ?>
+    //retrieve available text areas for page
+    var SHtextareas = <?php echo $this->getTextAreas(); ?>
 
-        jQuery('document').ready(function() {
-            //check if tinyMCE is available
-            if(wyiwygDefault && getHasTinyMCE()) {
-                //wait for tinyMCE init
-                var tinyMCEcheck=setInterval(function () {
-                    if(tinyMCE.activeEditor) {
-                        initTextareas();
-                        clearInterval(tinyMCEcheck);
-                    }
-                }, 200);
-            }else{
-                //init immeditately
-                initTextareas();
-            }
-
-            //reinit after catalog category ajax load
-            Ajax.Responders.register({
-                onComplete: function (response) {
-                        initTextareas();
+            jQuery('document').ready(function() {
+                //check if tinyMCE is available
+                if(wyiwygDefault && getHasTinyMCE()) {
+                    //wait for tinyMCE init
+                    var tinyMCEcheck=setInterval(function () {
+                        if(tinyMCE.activeEditor) {
+                            initTextareas();
+                            clearInterval(tinyMCEcheck);
+                        }
+                    }, 200);
+                }else{
+                    //init immeditately
+                    initTextareas();
                 }
-            });
 
-        //modified function for inserting variables and images in textfield
-        updateElementAtCursor = function (el, value, win) {
-            var replaced = false;
-            jQuery(SHtextareas).each(function (k, v) {
-                if (v.title == jQuery(el).attr('id')) {
-                    SHtextareas[k].editor.replaceSelection(value);
-                    replaced = true;
+                //reinit after catalog category ajax load
+                Ajax.Responders.register({
+                    onComplete: function (response) {
+                        initTextareas();
+                    }
+                });
+
+                //modified function for inserting variables and images in textfield
+                updateElementAtCursor = function (el, value, win) {
+                    var replaced = false;
+                    jQuery(SHtextareas).each(function (k, v) {
+                        if (v.title == jQuery(el).attr('id')) {
+                            SHtextareas[k].editor.replaceSelection(value);
+                            replaced = true;
+                            return false;
+                        }
+                    });
+                    if (replaced) {
+                        return false;
+                    }
+
+                    if (win == undefined) {
+                        win = window.self;
+                    }
+                    if (document.selection) {
+                        el.focus();
+                        sel = win.document.selection.createRange();
+                        sel.text = value;
+                    } else if (el.selectionStart || el.selectionStart == '0') {
+                        var startPos = el.selectionStart;
+                        var endPos = el.selectionEnd;
+                        el.value = el.value.substring(0, startPos) + value + el.value.substring(endPos, el.value.length);
+                    } else {
+                        el.value += value;
+                    }
                     return false;
                 }
-            });
-            if (replaced) {
-                return false;
-            }
-
-            if (win == undefined) {
-                win = window.self;
-            }
-            if (document.selection) {
-                el.focus();
-                sel = win.document.selection.createRange();
-                sel.text = value;
-            } else if (el.selectionStart || el.selectionStart == '0') {
-                var startPos = el.selectionStart;
-                var endPos = el.selectionEnd;
-                el.value = el.value.substring(0, startPos) + value + el.value.substring(endPos, el.value.length);
-            } else {
-                el.value += value;
-            }
-            return false;
-        }
-        })
+            })
         ;
 
-        //init codemirror functionalty
-        function initTextareas() {
+    //init codemirror functionalty
+    function initTextareas() {
+        jQuery(SHtextareas).each(function (k, v) {
+            ///only run if textarea exists
+            if (jQuery('#' + v.title).length == 0) {
+                //if text area does not exist do nothing
+                return;
+            }
+
+            //prevent double loading of codemirror in case of AJAX trigger
+            if(jQuery('#' + v.title).hasClass('codemirror-loaded')){
+                return;
+            }else{
+                jQuery('#' + v.title).addClass('codemirror-loaded');
+            }
+
+            //set codetype for editor
+            var codeType = 'htmlmixed';
+            if(v.type) {
+                codeType = v.type;
+            }
+
+            //init codemirror editor
+            var editor = CodeMirror.fromTextArea(document.getElementById(v.title), {
+                lineNumbers: true,
+                styleActiveLine: true,
+                lineWrapping: true,
+                matchBrackets: true,
+                autoCloseBrackets: true,
+                autoCloseTags: true,
+                extraKeys: {
+                    "Ctrl-J": "toMatchingTag",
+                    "Ctrl-Space": "autocomplete",
+                    "F11": function(cm) {
+                        cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+                    },
+                    "Esc": function(cm) {
+                        if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+                    }
+                },
+                styleActiveLine: true,
+                matchTags: {bothTags: true},
+                mode: codeType
+            });
+
+            //add auto indent functionality
+            var charWidth = editor.defaultCharWidth(), basePadding = 4;
+            editor.on("renderLine", function(cm, line, elt) {
+                var off = CodeMirror.countColumn(line.text, null, cm.getOption("tabSize")) * charWidth;
+                elt.style.textIndent = "-" + off + "px";
+                elt.style.paddingLeft = (basePadding + off) + "px";
+            });
+
+
+            //on change set value to original textfield
+            editor.on('change', function (cm) {
+                if (jQuery('#' + v.title).val() != cm.getValue()) {
+                    jQuery('#' + v.title).val(cm.getValue());
+                }
+            });
+
+            //modified wysiwyg toggle function
+            jQuery('#toggle' + v.title).click(function()
+            {
+                jQuery('#' + v.title).hide();
+                if(jQuery(editor.getWrapperElement()).is(':visible')){
+                    jQuery(editor.getWrapperElement()).hide();
+                    var interv = setInterval(function() {
+                        if(jQuery('#' + v.title + '_parent').not(':visible')){
+                            jQuery('#' + v.title + '_parent').show();
+                        }else{
+                            clearInterval(interv);
+                        }
+                    },100)
+                }else{
+                    jQuery(editor.getWrapperElement()).show();
+                }
+            })
+
+            if(wyiwygDefault && jQuery(document).find('#toggle' + v.title).length){
+                editor.getWrapperElement().hide();
+            }
+
+            SHtextareas[k].editor = editor;
+            setTimeout(function() {
+                editor.refresh();
+            },300)
+        })
+
+        // interval for looking for changes in textarea.
+        // if changes are detected, codemirror editor is updated
+        // Unfortunately there is no textarea onchange event, so interval is needed.
+        setInterval(function () {
             jQuery(SHtextareas).each(function (k, v) {
+                //only run if textarea exists
                 if (jQuery('#' + v.title).length == 0) {
                     //if text area does not exist do nothing
-                    SHtextareas[k] = false;
                     return;
                 }
-
-                //prevent double loading of codemirror in case of AJAX trigger
-                if(jQuery('#' + v.title).hasClass('codemirror-loaded')){
-                    return;
-                }else{
-                    jQuery('#' + v.title).addClass('codemirror-loaded');
-                }
-
-                //set codetype for editor
-                var codeType = 'htmlmixed';
-                if(v.type) {
-                    codeType = v.type;
-                }
-
-                //init codemirror editor
-                var editor = CodeMirror.fromTextArea(document.getElementById(v.title), {
-                    lineNumbers: true,
-                    styleActiveLine: true,
-                    lineWrapping: true,
-                    matchBrackets: true,
-                    autoCloseBrackets: true,
-                    autoCloseTags: true,
-                    extraKeys: {
-                        "Ctrl-J": "toMatchingTag",
-                        "Ctrl-Space": "autocomplete",
-                        "F11": function(cm) {
-                            cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-                        },
-                        "Esc": function(cm) {
-                            if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-                        }
-                    },
-                    styleActiveLine: true,
-                    matchTags: {bothTags: true},
-                    mode: codeType
-                });
-
-                //add auto indent functionality
-                var charWidth = editor.defaultCharWidth(), basePadding = 4;
-                editor.on("renderLine", function(cm, line, elt) {
-                    var off = CodeMirror.countColumn(line.text, null, cm.getOption("tabSize")) * charWidth;
-                    elt.style.textIndent = "-" + off + "px";
-                    elt.style.paddingLeft = (basePadding + off) + "px";
-                });
-
-
-                //on change set value to original textfield
-                editor.on('change', function (cm) {
-                    if (jQuery('#' + v.title).val() != cm.getValue()) {
-                        jQuery('#' + v.title).val(cm.getValue());
+                if (v) {
+                    if (jQuery('#' + v.title).val() != v.editor.getValue()) {
+                        v.editor.setValue(jQuery('#' + v.title).val())
+                        v.editor.refresh();
                     }
-                });
-
-                //modified wysiwyg toggle function
-                jQuery('#toggle' + v.title).click(function()
-               {
-                    jQuery('#' + v.title).hide();
-                    if(jQuery(editor.getWrapperElement()).is(':visible')){
-                        jQuery(editor.getWrapperElement()).hide();
-                        var interv = setInterval(function() {
-                            if(jQuery('#' + v.title + '_parent').not(':visible')){
-                                jQuery('#' + v.title + '_parent').show();
-                            }else{
-                                clearInterval(interv);
-                            }
-                        },100)
-                    }else{
-                        jQuery(editor.getWrapperElement()).show();
-                    }
-                })
-
-                if(wyiwygDefault && jQuery(document).find('#toggle' + v.title).length){
-                    editor.getWrapperElement().hide();
                 }
+            })
+        }, 300);
 
-                SHtextareas[k].editor = editor;
+        jQuery(document).ready(function() {
+            jQuery('.tab-item-link').on('click' ,function() {
                 setTimeout(function() {
-                    editor.refresh();
-                },300)
-            })
-
-            // interval for looking for changes in textarea.
-            // if changes are detected, codemirror editor is updated
-            // Unfortunately there is no textarea onchange event, so interval is needed.
-            setInterval(function () {
-                jQuery(SHtextareas).each(function (k, v) {
-                    if (v) {
-                        if (jQuery('#' + v.title).val() != v.editor.getValue()) {
-                            v.editor.setValue(jQuery('#' + v.title).val())
-                            v.editor.refresh();
+                    jQuery(SHtextareas).each(function(k,v) {
+                        //only run if textarea exists
+                        if (jQuery('#' + v.title).length == 0) {
+                            //if text area does not exist do nothing
+                            return;
                         }
-                    }
-                })
-            }, 300);
-
-            jQuery(document).ready(function() {
-                jQuery('.tab-item-link').on('click' ,function() {
-                    console.log('asdasdas');
-                    setTimeout(function() {
-                        jQuery(SHtextareas).each(function(k,v) {
-                            v.editor.refresh();
-                        })
+                        console.log('###editor###');
+                        console.log(v.editor);
+                        v.editor.refresh();
                     })
-                })
+                },100)
             })
-        }
+        })
+    }
 
-        //checks if there are any tinyMCE enabled fields on the page
-        function getHasTinyMCE() {
-            var hastiny = false;
+    //checks if there are any tinyMCE enabled fields on the page
+    function getHasTinyMCE() {
+        var hastiny = false;
+        jQuery(SHtextareas).each(function(k,v) {
+            if(jQuery('#toggle' + v.title).length) {
+                hastiny = true;
+                return false;
+            }
+        })
+        return hastiny;
+    }
+
+    //Modified template control function for newsletter templates
+    //fixes issues with 'convert to plain text' functionality
+    if(typeof templateControl !== 'undefined'){
+        templateControl.stripTags = function() {
+            if(!window.confirm("Are you sure that you want to strip all tags?")) {
+                return false;
+            }
+            if(this.isEditor()) {
+                this.getEditor().turnOff();
+                this.getEditor().getToggleButton().hide();
+            }
+            this.unconvertedText = $(this.id).value;
+            $('convert_button').hide();
+            $('convert_button_back').show();
+            $(this.id).value =  $(this.id).value.stripScripts().stripTags();
+            $('field_template_styles').hide();
+
+            //show codemirror editor
+            var textAreaId = this.id;
             jQuery(SHtextareas).each(function(k,v) {
-                if(jQuery('#toggle' + v.title).length) {
-                    hastiny = true;
-                    return false;
+                if(v.title == textAreaId){
+                    v.editor.getWrapperElement().show();
                 }
-            })
-            return hastiny;
-        }
+            });
 
-        //Modified template control function for newsletter templates
-        //fixes issues with 'convert to plain text' functionality
-        if(typeof templateControl !== 'undefined'){
-            templateControl.stripTags = function() {
-                if(!window.confirm("Are you sure that you want to strip all tags?")) {
-                    return false;
-                }
-                if(this.isEditor()) {
-                    this.getEditor().turnOff();
-                    this.getEditor().getToggleButton().hide();
-                }
-                this.unconvertedText = $(this.id).value;
-                $('convert_button').hide();
-                $('convert_button_back').show();
-                $(this.id).value =  $(this.id).value.stripScripts().stripTags();
-                $('field_template_styles').hide();
+            this.typeChange = true;
+            return false;
+        };
 
-                //show codemirror editor
+        templateControl.unStripTags = function () {
+            $('convert_button').show();
+            $('convert_button_back').hide();
+            $(this.id).value =  this.unconvertedText;
+            if(this.isEditor()) {
+                this.getEditor().turnOn();
+                this.getEditor().getToggleButton().show();
+
+                //hide codemirror editor
                 var textAreaId = this.id;
                 jQuery(SHtextareas).each(function(k,v) {
                     if(v.title == textAreaId){
-                        v.editor.getWrapperElement().show();
+                        v.editor.getWrapperElement().hide();
                     }
                 });
+            }
 
-                this.typeChange = true;
-                return false;
-            };
-
-            templateControl.unStripTags = function () {
-                $('convert_button').show();
-                $('convert_button_back').hide();
-                $(this.id).value =  this.unconvertedText;
-                if(this.isEditor()) {
-                    this.getEditor().turnOn();
-                    this.getEditor().getToggleButton().show();
-
-                    //hide codemirror editor
-                    var textAreaId = this.id;
-                    jQuery(SHtextareas).each(function(k,v) {
-                        if(v.title == textAreaId){
-                            v.editor.getWrapperElement().hide();
-                        }
-                    });
-                }
-
-                this.typeChange = false;
-                $('field_template_styles').show();
-                return false;
-            };
-        }
+            this.typeChange = false;
+            $('field_template_styles').show();
+            return false;
+        };
+    }
     </script>
-    
+
 <?php } ?>
