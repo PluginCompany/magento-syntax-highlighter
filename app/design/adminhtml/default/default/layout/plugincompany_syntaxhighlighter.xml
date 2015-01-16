@@ -65,7 +65,7 @@
             </action>
         </reference>
         <reference name="content" after="-">
-            <block type="plugincompany_codemirror/codemirror" template="plugincompany/codemirror/codemirror.phtml"/>
+            <block type="plugincompany_syntaxhighlighter/syntaxhighlighter" template="plugincompany/syntaxhighlighter/syntaxhighlighter.phtml"/>
         </reference>
     </plugincompany_codemirror>
 </layout>

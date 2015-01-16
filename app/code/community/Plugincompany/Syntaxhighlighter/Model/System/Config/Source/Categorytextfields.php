@@ -14,7 +14,7 @@
  * SUPPORT@PLUGIN.COMPANY
  *
  */
-class Plugincompany_Codemirror_Model_System_Config_Source_Categorytextfields {
+class Plugincompany_Syntaxhighlighter_Model_System_Config_Source_Categorytextfields {
 
     /**
      * Options getter

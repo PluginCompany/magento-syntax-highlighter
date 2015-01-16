@@ -15,7 +15,7 @@
  *
  */
 ?>
-<?php if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/enabled')){
+<?php if(Mage::getStoreConfig('plugincompany_syntaxhighlighter/plugincompany_syntaxhighlighter_group/enabled')){
     ?>
     <!--[if lte IE 8]>
     <script type="text/javascript">
@@ -237,8 +237,6 @@
                             //if text area does not exist do nothing
                             return;
                         }
-                        console.log('###editor###');
-                        console.log(v.editor);
                         v.editor.refresh();
                     })
                 },100)

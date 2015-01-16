@@ -14,7 +14,7 @@
  * SUPPORT@PLUGIN.COMPANY
  *
  */
-class Plugincompany_Codemirror_Model_System_Config_Source_Producttextfields
+class Plugincompany_Syntaxhighlighter_Model_System_Config_Source_Producttextfields
 {
 
     /**

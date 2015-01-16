@@ -14,10 +14,10 @@
  * SUPPORT@PLUGIN.COMPANY
  *
  */
-class Plugincompany_Codemirror_Block_Codemirror extends Mage_Core_Block_Template
+class Plugincompany_Syntaxhighlighter_Block_Syntaxhighlighter extends Mage_Core_Block_Template
 {
     /**
-     * returns JSON with codemirror enabled textarea fields.
+     * returns JSON with syntaxhighlighter enabled textarea fields.
      * @return string
      */
     public function getTextAreas()
@@ -27,7 +27,7 @@ class Plugincompany_Codemirror_Block_Codemirror extends Mage_Core_Block_Template
 
         switch($controller){
             case 'cms_page':
-                if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/cms_page')){
+                if(Mage::getStoreConfig('plugincompany_syntaxhighlighter/plugincompany_syntaxhighlighter_group/cms_page')){
                     $editorFields = array(
                         array(
                             'title' => 'page_content'
@@ -42,7 +42,7 @@ class Plugincompany_Codemirror_Block_Codemirror extends Mage_Core_Block_Template
                 }
                 break;
             case 'cms_block':
-                if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/cms_block')){
+                if(Mage::getStoreConfig('plugincompany_syntaxhighlighter/plugincompany_syntaxhighlighter_group/cms_block')){
                     $editorFields = array(
                         array(
                             'title'=>'block_content'
@@ -51,9 +51,9 @@ class Plugincompany_Codemirror_Block_Codemirror extends Mage_Core_Block_Template
                 }
                 break;
             case 'catalog_product':
-                if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/product')){
+                if(Mage::getStoreConfig('plugincompany_syntaxhighlighter/plugincompany_syntaxhighlighter_group/product')){
                     $editorFields = array();
-                    if ($fields = Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/product_fields')) {
+                    if ($fields = Mage::getStoreConfig('plugincompany_syntaxhighlighter/plugincompany_syntaxhighlighter_group/product_fields')) {
                         foreach(explode(',',$fields) as $field){
                             $editorFields[] = array('title' => $field);
                         }
@@ -61,9 +61,9 @@ class Plugincompany_Codemirror_Block_Codemirror extends Mage_Core_Block_Template
                 }
                 break;
             case 'catalog_category':
-                if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/categories')){
+                if(Mage::getStoreConfig('plugincompany_syntaxhighlighter/plugincompany_syntaxhighlighter_group/categories')){
                     $editorFields = array();
-                    if ($fields = Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/category_fields')) {
+                    if ($fields = Mage::getStoreConfig('plugincompany_syntaxhighlighter/plugincompany_syntaxhighlighter_group/category_fields')) {
                         foreach(explode(',',$fields) as $field){
                             $editorFields[] = array('title' => new Zend_Json_Expr("jQuery('[name*=\\\\[{$field}\\\\]]').eq(0).attr('id')"));
                         }
@@ -71,7 +71,7 @@ class Plugincompany_Codemirror_Block_Codemirror extends Mage_Core_Block_Template
                 }
                 break;
             case 'newsletter_template':
-                if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/newsletter')){
+                if(Mage::getStoreConfig('plugincompany_syntaxhighlighter/plugincompany_syntaxhighlighter_group/newsletter')){
                     $editorFields = array(
                         array(
                             'title'=>'text'
@@ -84,7 +84,7 @@ class Plugincompany_Codemirror_Block_Codemirror extends Mage_Core_Block_Template
                 }
                 break;
             case 'system_email_template':
-                if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/transactional')){
+                if(Mage::getStoreConfig('plugincompany_syntaxhighlighter/plugincompany_syntaxhighlighter_group/transactional')){
                     $editorFields = array(
                         array(
                             'title'=>'template_text'

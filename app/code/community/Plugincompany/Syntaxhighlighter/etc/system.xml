@@ -16,7 +16,7 @@
 -->
 <config>
     <sections>
-        <plugincompany_codemirror translate="label" module="plugincompany_codemirror">
+        <plugincompany_syntaxhighlighter translate="label" module="plugincompany_syntaxhighlighter">
             <label>Syntax Highlighting</label>
             <tab>general</tab>
             <frontend_type>text</frontend_type>
@@ -25,7 +25,7 @@
             <show_in_website>1</show_in_website>
             <show_in_store>1</show_in_store>
             <groups>
-                <plugincompany_codemirror_group translate="label">
+                <plugincompany_syntaxhighlighter_group translate="label">
                     <label>Configure Admin Syntax Highlighting</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>0</sort_order>
@@ -73,7 +73,7 @@
                         <product_fields translate="label">
                             <label>Enabled Product Fields</label>
                             <frontend_type>multiselect</frontend_type>
-                            <source_model>Plugincompany_Codemirror_Model_System_Config_Source_Producttextfields</source_model>
+                            <source_model>Plugincompany_Syntaxhighlighter_Model_System_Config_Source_Producttextfields</source_model>
                             <sort_order>4</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -93,7 +93,7 @@
                         <category_fields translate="label">
                             <label>Enabled Category Fields</label>
                             <frontend_type>multiselect</frontend_type>
-                            <source_model>Plugincompany_Codemirror_Model_System_Config_Source_Categorytextfields</source_model>
+                            <source_model>Plugincompany_Syntaxhighlighter_Model_System_Config_Source_Categorytextfields</source_model>
                             <sort_order>6</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
@@ -120,8 +120,8 @@
                             <show_in_store>1</show_in_store>
                         </transactional>
                     </fields>
-                </plugincompany_codemirror_group>
+                </plugincompany_syntaxhighlighter_group>
             </groups>
-        </plugincompany_codemirror>
+        </plugincompany_syntaxhighlighter>
     </sections>
 </config>

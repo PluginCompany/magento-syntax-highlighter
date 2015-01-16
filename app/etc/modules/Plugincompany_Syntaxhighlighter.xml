@@ -16,9 +16,9 @@
 -->
 <config>
     <modules>
-        <Plugincompany_Codemirror>
+        <Plugincompany_Syntaxhighlighter>
             <active>true</active>
-            <codePool>local</codePool>
-        </Plugincompany_Codemirror>
+            <codePool>community</codePool>
+        </Plugincompany_Syntaxhighlighter>
     </modules>
 </config>

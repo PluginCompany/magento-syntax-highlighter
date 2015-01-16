@@ -16,28 +16,28 @@
 -->
 <config>
     <modules>
-        <Plugincompany_Codemirror>
+        <Plugincompany_Syntaxhighlighter>
             <version>1.0.0</version>
-        </Plugincompany_Codemirror>
+        </Plugincompany_Syntaxhighlighter>
     </modules>
     <global>
         <blocks>
-            <plugincompany_codemirror>
-                <class>Plugincompany_Codemirror_Block</class>
-            </plugincompany_codemirror>
+            <plugincompany_syntaxhighlighter>
+                <class>Plugincompany_Syntaxhighlighter_Block</class>
+            </plugincompany_syntaxhighlighter>
         </blocks>
         <helpers>
-            <plugincompany_codemirror>
-                <class>Plugincompany_Codemirror_Helper</class>
-            </plugincompany_codemirror>
+            <plugincompany_syntaxhighlighter>
+                <class>Plugincompany_Syntaxhighlighter_Helper</class>
+            </plugincompany_syntaxhighlighter>
         </helpers>
     </global>
     <adminhtml>
         <layout>
             <updates>
-                <plugincompany_codemirror>
-                    <file>plugincompany_codemirror.xml</file>
-                </plugincompany_codemirror>
+                <plugincompany_syntaxhighlighter>
+                    <file>plugincompany_syntaxhighlighter.xml</file>
+                </plugincompany_syntaxhighlighter>
             </updates>
         </layout>
         <acl>
@@ -48,9 +48,9 @@
                             <children>
                                 <config>
                                     <children>
-                                        <plugincompany_codemirror>
+                                        <plugincompany_syntaxhighlighter>
                                             <title>asdasd</title>
-                                        </plugincompany_codemirror>
+                                        </plugincompany_syntaxhighlighter>
                                     </children>
                                 </config>
                             </children>
@@ -61,8 +61,8 @@
         </acl>
     </adminhtml>
     <default>
-        <plugincompany_codemirror>
-            <plugincompany_codemirror_group>
+        <plugincompany_syntaxhighlighter>
+            <plugincompany_syntaxhighlighter_group>
                 <enabled>1</enabled>
                 <cms_page>1</cms_page>
                 <cms_block>1</cms_block>
@@ -72,7 +72,7 @@
                 <product_fields>custom_layout_update,description,in_depth,meta_description,meta_keyword,short_description</product_fields>
                 <newsletter>1</newsletter>
                 <transactional>1</transactional>
-            </plugincompany_codemirror_group>
-        </plugincompany_codemirror>
+            </plugincompany_syntaxhighlighter_group>
+        </plugincompany_syntaxhighlighter>
     </default>
 </config>

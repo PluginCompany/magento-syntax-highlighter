@@ -14,7 +14,7 @@
  * SUPPORT@PLUGIN.COMPANY
  *
  */
-class Plugincompany_Codemirror_Helper_Data extends Mage_Core_Helper_Abstract
+class Plugincompany_Syntaxhighlighter_Helper_Data extends Mage_Core_Helper_Abstract
 {
 
 }
