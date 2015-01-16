@@ -17,9 +17,15 @@
 ?>
 <?php if(Mage::getStoreConfig('plugincompany_codemirror/plugincompany_codemirror_group/enabled')){
     ?>
+    <!--[if lte IE 8]>
+    <script type="text/javascript">
+        var isIe8 = true;
+    </script>
+    <![endif]-->
     <script type="text/javascript">
     //get default wysiwyg setting
-    var wyiwygDefault = false;
+    var wyiwygDefault;
+    wyiwygDefault = false;
     <?php if(Mage::getStoreConfig('cms/wysiwyg/enabled') == 'enabled'){ ?>
     wyiwygDefault = true;
     <?php } ?>
@@ -79,6 +85,31 @@
                     }
                     return false;
                 }
+
+                if(typeof catalogWysiwygEditor != 'undefined'){
+                    catalogWysiwygEditor.closeDialogWindow = function(dialogWindow){
+                        // remove form validation event after closing editor to prevent errors during save main form
+                        if (typeof varienGlobalEvents != undefined && editorFormValidationHandler) {
+                            varienGlobalEvents.removeEventHandler('formSubmit', editorFormValidationHandler);
+                        }
+
+                        //IE fix - blocked form fields after closing
+                        //$(dialogWindow.options.firedElementId).focus();
+
+                        // focus function causes errors in IE8
+
+
+                        //destroy the instance of editor
+                        wysiwygObj = eval('wysiwyg'+dialogWindow.options.firedElementId+'_editor');
+                        if (tinyMCE.get(wysiwygObj.id)) {
+                            tinyMCE.execCommand('mceRemoveControl', true, wysiwygObj.id);
+                        }
+
+                        dialogWindow.close();
+                        Windows.overlayShowEffectOptions = this.overlayShowEffectOptions;
+                        Windows.overlayHideEffectOptions = this.overlayHideEffectOptions;
+                    }
+                }
             })
         ;
 
@@ -105,7 +136,7 @@
             }
 
             //init codemirror editor
-            var editor = CodeMirror.fromTextArea(document.getElementById(v.title), {
+            var editor2 = CodeMirror.fromTextArea(document.getElementById(v.title), {
                 lineNumbers: true,
                 styleActiveLine: true,
                 lineWrapping: true,
@@ -128,8 +159,8 @@
             });
 
             //add auto indent functionality
-            var charWidth = editor.defaultCharWidth(), basePadding = 4;
-            editor.on("renderLine", function(cm, line, elt) {
+            var charWidth = editor2.defaultCharWidth(), basePadding = 4;
+            editor2.on("renderLine", function(cm, line, elt) {
                 var off = CodeMirror.countColumn(line.text, null, cm.getOption("tabSize")) * charWidth;
                 elt.style.textIndent = "-" + off + "px";
                 elt.style.paddingLeft = (basePadding + off) + "px";
@@ -137,18 +168,24 @@
 
 
             //on change set value to original textfield
-            editor.on('change', function (cm) {
+            editor2.on('change', function (cm) {
                 if (jQuery('#' + v.title).val() != cm.getValue()) {
                     jQuery('#' + v.title).val(cm.getValue());
                 }
             });
 
             //modified wysiwyg toggle function
-            jQuery('#toggle' + v.title).click(function()
+            jQuery('#toggle' + v.title).click(function(e)
             {
-                jQuery('#' + v.title).hide();
-                if(jQuery(editor.getWrapperElement()).is(':visible')){
-                    jQuery(editor.getWrapperElement()).hide();
+                jQuery('#' + v.title).hide()
+
+                //ie8 fix
+                if(typeof isIe8 != 'undefined'){
+                    jQuery('#' + v.title).css({position:'absolute',left:'-10000px'});
+                }
+
+                if(jQuery(editor2.getWrapperElement()).is(':visible')){
+                    jQuery(editor2.getWrapperElement()).hide();
                     var interv = setInterval(function() {
                         if(jQuery('#' + v.title + '_parent').not(':visible')){
                             jQuery('#' + v.title + '_parent').show();
@@ -157,17 +194,18 @@
                         }
                     },100)
                 }else{
-                    jQuery(editor.getWrapperElement()).show();
+                    jQuery(editor2.getWrapperElement()).show();
                 }
             })
 
             if(wyiwygDefault && jQuery(document).find('#toggle' + v.title).length){
-                editor.getWrapperElement().hide();
+                var wrpr = editor2.getWrapperElement();
+                jQuery(wrpr).hide();
             }
 
-            SHtextareas[k].editor = editor;
+            SHtextareas[k].editor = editor2;
             setTimeout(function() {
-                editor.refresh();
+                editor2.refresh();
             },300)
         })
 
