@@ -136,7 +136,7 @@
             }
 
             //init codemirror editor
-            var editor2 = CodeMirror.fromTextArea(document.getElementById(v.title), {
+            var editor = CodeMirror.fromTextArea(document.getElementById(v.title), {
                 lineNumbers: true,
                 styleActiveLine: true,
                 lineWrapping: true,
@@ -159,8 +159,8 @@
             });
 
             //add auto indent functionality
-            var charWidth = editor2.defaultCharWidth(), basePadding = 4;
-            editor2.on("renderLine", function(cm, line, elt) {
+            var charWidth = editor.defaultCharWidth(), basePadding = 4;
+            editor.on("renderLine", function(cm, line, elt) {
                 var off = CodeMirror.countColumn(line.text, null, cm.getOption("tabSize")) * charWidth;
                 elt.style.textIndent = "-" + off + "px";
                 elt.style.paddingLeft = (basePadding + off) + "px";
@@ -168,7 +168,7 @@
 
 
             //on change set value to original textfield
-            editor2.on('change', function (cm) {
+            editor.on('change', function (cm) {
                 if (jQuery('#' + v.title).val() != cm.getValue()) {
                     jQuery('#' + v.title).val(cm.getValue());
                 }
@@ -184,8 +184,8 @@
                     jQuery('#' + v.title).css({position:'absolute',left:'-10000px'});
                 }
 
-                if(jQuery(editor2.getWrapperElement()).is(':visible')){
-                    jQuery(editor2.getWrapperElement()).hide();
+                if(jQuery(editor.getWrapperElement()).is(':visible')){
+                    jQuery(editor.getWrapperElement()).hide();
                     var interv = setInterval(function() {
                         if(jQuery('#' + v.title + '_parent').not(':visible')){
                             jQuery('#' + v.title + '_parent').show();
@@ -194,18 +194,18 @@
                         }
                     },100)
                 }else{
-                    jQuery(editor2.getWrapperElement()).show();
+                    jQuery(editor.getWrapperElement()).show();
                 }
             })
 
             if(wyiwygDefault && jQuery(document).find('#toggle' + v.title).length){
-                var wrpr = editor2.getWrapperElement();
+                var wrpr = editor.getWrapperElement();
                 jQuery(wrpr).hide();
             }
 
-            SHtextareas[k].editor = editor2;
+            SHtextareas[k].editor = editor;
             setTimeout(function() {
-                editor2.refresh();
+                editor.refresh();
             },300)
         })
 
