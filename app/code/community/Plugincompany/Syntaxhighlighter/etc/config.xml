@@ -17,7 +17,7 @@
 <config>
     <modules>
         <Plugincompany_Syntaxhighlighter>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </Plugincompany_Syntaxhighlighter>
     </modules>
     <global>
