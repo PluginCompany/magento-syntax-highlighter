@@ -46,7 +46,7 @@
     <plugincompany_codemirror>
         <reference name="head">
             <action method="addJs">
-                <script>plugincompany/jquery.min.js</script>
+                <script>plugincompany/jquerynoconflict.js</script>
             </action>
             <action method="addJs">
                 <script>plugincompany/codemirror/codemirror-compressed.js</script>
