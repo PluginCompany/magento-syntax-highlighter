@@ -204,9 +204,14 @@
             }
 
             SHtextareas[k].editor = editor;
-            setTimeout(function() {
-                editor.refresh();
-            },300)
+
+            //a bit hacky but it fixes the codemirror fields initial white display bug
+            for(i=1;i < 20;i++){
+                setTimeout(function () {
+                    editor.refresh();
+//                    console.log('refresh')
+                }, (i * 300));
+            }
         })
 
         // interval for looking for changes in textarea.
