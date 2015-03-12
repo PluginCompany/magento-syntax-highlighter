@@ -1,4 +1,4 @@
-# magento-syntax-highlighter
+# Magento Syntax Highlighter Extension
 Syntax Highlighter Extension for Magento - Highlight HTML, CSS and JS in the Magento admin area
 
 The extension repo will be updated soon, meanwhile the extension is available on Magento Connect and on our website.
