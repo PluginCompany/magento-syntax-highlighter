@@ -11,4 +11,4 @@ The extension repo will be updated soon, meanwhile the extension is available on
 ## License
 The extension is licensed under the GPL 2 license.
 
-## Special thanks to all contributors of the [Codemirror project](https://github.com/codemirror/codemirror) 
+### Special thanks to all contributors of the [Codemirror project](https://github.com/codemirror/codemirror) which made the syntax highlighting possible
