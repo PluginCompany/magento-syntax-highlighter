@@ -3,7 +3,7 @@ Syntax Highlighter Extension for Magento - Highlight HTML, CSS and JS in the Mag
 
 The extension repo will be updated soon, meanwhile the extension is available on Magento Connect and on our website.
 
-## Extension Links:
+## Extension Links
 [Magento Connect Page](http://www.magentocommerce.com/magento-connect/syntax-highlighter-by-plugin-company.html)
 
 [Product Page on our website](https://plugin.company/magento-extensions/syntax-highlighter.html)
