@@ -8,8 +8,8 @@ The extension repo will be updated soon, meanwhile the extension is available on
 
 [Product Page on our website](https://plugin.company/magento-extensions/syntax-highlighter.html)
 
-## License
-The extension is licensed under the GPL 2 license.
-
 ### Thanks
 Special thanks to all contributors of the [Codemirror project](https://github.com/codemirror/codemirror) which made the syntax highlighting possible
+
+### License
+The extension is licensed under the GPL 2 license.
