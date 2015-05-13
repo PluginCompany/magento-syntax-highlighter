@@ -8,10 +8,9 @@
 * Instantly tidy up existing store content by selecting everything and pressing SHIFT+TAB
 * Open syntax autocompletion menu with CTRL+SPACE
 * Detects coding errors such as missing closing tags
-* Usable for CMS content, newsletters and transactional e-mails
+* Usable for Products, CMS content, newsletters and transactional e-mails
 * Highlight product and category descriptions and fields
 * Manage your Magento store content more efficiently!
-
 
 ## Extension Links
 [Magento Connect Page](http://www.magentocommerce.com/magento-connect/syntax-highlighter-by-plugin-company.html)
