@@ -13,8 +13,6 @@
 * Manage your Magento store content more efficiently!
 
 ## Extension Links
-[Magento Connect Page](http://www.magentocommerce.com/magento-connect/syntax-highlighter-by-plugin-company.html)
-
 [Documentation](https://plugin.company/docs/magento-extensions/magento-syntax-highlighter-user-manual/)
 
 [Magento Extension page on our website](https://plugin.company/magento-extensions/syntax-highlighter.html)
