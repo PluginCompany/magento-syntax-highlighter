@@ -18,6 +18,9 @@
 
 [Magento Extension page on our website](https://plugin.company/magento-extensions/syntax-highlighter.html)
 
+## Contribute
+Contributions are greatly appreciated!
+
 ### Thanks
 Special thanks to all contributors of the [Codemirror project](https://github.com/codemirror/codemirror) which made the syntax highlighting possible
 
