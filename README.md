@@ -2,15 +2,15 @@
 
 *Syntax Highlighter Extension for Magento - Highlight HTML, CSS and JS in the Magento admin area*
 
-Highlight HTML, Javascript and CSS in admin environment
-Flawless integration with Magento's default content editor
-Includes automatic tag closing and auto-indent functionalities
-Instantly tidy up existing store content with SHIFT+TAB
-Open syntax autocompletion menu with CTRL+SPACE
-Detects coding errors such as missing closing tags
-Usable for CMS content, newsletters and transactional e-mails
-Highlight product and category descriptions and fields
-Manage your Magento store content more efficiently!
+* Highlight HTML, Javascript and CSS in admin environment
+* Flawless integration with Magento's default content editor
+* Includes automatic tag closing and auto-indent functionalities
+* Instantly tidy up existing store content with SHIFT+TAB
+* Open syntax autocompletion menu with CTRL+SPACE
+* Detects coding errors such as missing closing tags
+* Usable for CMS content, newsletters and transactional e-mails
+* Highlight product and category descriptions and fields
+* Manage your Magento store content more efficiently!
 
 
 ## Extension Links
