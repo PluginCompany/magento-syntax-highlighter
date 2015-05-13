@@ -5,7 +5,7 @@
 * Highlight HTML, Javascript and CSS in admin environment
 * Flawless integration with Magento's default content editor
 * Includes automatic tag closing and auto-indent functionalities
-* Instantly tidy up existing store content with SHIFT+TAB
+* Instantly tidy up existing store content by selecting everything and pressing SHIFT+TAB
 * Open syntax autocompletion menu with CTRL+SPACE
 * Detects coding errors such as missing closing tags
 * Usable for CMS content, newsletters and transactional e-mails
