@@ -13,6 +13,14 @@
 * Manage your Magento store content more efficiently!
 * Choose exactly which attributes to enable the syntax highlighter for
 
+## Screenshots
+
+<img src="https://plugin.company/media/catalog/product/p/c/pc-syntaxhighlighter01_3.png" />
+
+<img src="https://plugin.company/media/catalog/product/p/c/pc-syntaxhighlighter03b.png" />
+
+<img src="https://plugin.company/media/catalog/product/cache/1/image/9df78eab33525d08d6e5fb8d27136e95/s/c/scr-syntaxhighlighter01_1.png" />
+
 ## Extension Links
 [Documentation](https://plugin.company/docs/magento-extensions/magento-syntax-highlighter-user-manual/)
 
