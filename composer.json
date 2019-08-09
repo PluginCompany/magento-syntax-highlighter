@@ -1,0 +1,13 @@
+{
+    "name": "plugin-company/magento-syntax-highlighter",
+    "description": "Syntax Highlighter Extension for Magento - Highlight HTML, CSS and JS in the Magento admin area",
+    "type": "magento-module",
+    "license": "https://www.gnu.org/licenses/old-licenses/gpl-2.0.html",
+    "authors": [
+        {
+            "name": "The Plugin Company",
+            "email": "info@plugin.company"
+        }
+    ],
+    "require": {}
+}
