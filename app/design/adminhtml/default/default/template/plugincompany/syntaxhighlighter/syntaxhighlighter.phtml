@@ -60,24 +60,12 @@
     var SHtextareas = <?php echo $this->getTextAreas(); ?>
 
             jQuery('document').ready(function() {
-                //check if tinyMCE is available
-                if(wyiwygDefault && getHasTinyMCE()) {
-                    //wait for tinyMCE init
-                    var tinyMCEcheck=setInterval(function () {
-                        if(tinyMCE.activeEditor) {
-                            initTextareas();
-                            clearInterval(tinyMCEcheck);
-                        }
-                    }, 200);
-                }else{
-                    //init immeditately
-                    initTextareas();
-                }
+                startInitTextAreas();
 
                 //reinit after catalog category ajax load
                 Ajax.Responders.register({
                     onComplete: function (response) {
-                        initTextareas();
+                        startInitTextAreas();
                     }
                 });
 
@@ -235,29 +223,23 @@
             for(i=1;i < 20;i++){
                 setTimeout(function () {
                     editor.refresh();
-//                    console.log('refresh')
                 }, (i * 300));
             }
         })
 
+
         // interval for looking for changes in textarea.
-        // if changes are detected, codemirror editor is updated
         // Unfortunately there is no textarea onchange event, so interval is needed.
         setInterval(function () {
-            jQuery(SHtextareas).each(function (k, v) {
-                //only run if textarea exists
-                if (jQuery('#' + v.title).length == 0) {
-                    //if text area does not exist do nothing
-                    return;
-                }
-                if (v) {
-                    if (jQuery('#' + v.title).val() != v.editor.getValue()) {
-                        v.editor.setValue(jQuery('#' + v.title).val())
-                        v.editor.refresh();
-                    }
-                }
-            })
+            if(typeof tinyMCE != "undefined"){
+                tinyMCE.triggerSave();
+            }
+            applyTextAreaChanges();
         }, 300);
+
+        jQuery('button').click(function(){
+            applyTextAreaChanges();
+        })
 
         jQuery(document).ready(function() {
             jQuery('.tab-item-link').on('click' ,function() {
@@ -337,6 +319,40 @@
             $('field_template_styles').show();
             return false;
         };
+    }
+
+    // if changes are detected, codemirror editor is updated
+    function applyTextAreaChanges(){
+        jQuery(SHtextareas).each(function (k, v) {
+            //only run if textarea exists
+            if (jQuery('#' + v.title).length == 0) {
+                //if text area does not exist do nothing
+                return;
+            }
+            if (v && v.editor) {
+
+                if (jQuery('#' + v.title).val() != v.editor.getValue()) {
+                    v.editor.setValue(jQuery('#' + v.title).val())
+                    v.editor.refresh();
+                }
+            }
+        })
+    }
+
+    function startInitTextAreas(){
+        //check if tinyMCE is available
+        if(wyiwygDefault && getHasTinyMCE()) {
+            //wait for tinyMCE init
+            var tinyMCEcheck=setInterval(function () {
+                if(tinyMCE.activeEditor) {
+                    initTextareas();
+                    clearInterval(tinyMCEcheck);
+                }
+            }, 200);
+        }else{
+            //init immeditately
+            initTextareas();
+        }
     }
     </script>
 

@@ -43,7 +43,7 @@
 <config>
     <modules>
         <Plugincompany_Syntaxhighlighter>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </Plugincompany_Syntaxhighlighter>
     </modules>
     <global>

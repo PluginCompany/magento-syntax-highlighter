@@ -94,4 +94,31 @@
             <block type="plugincompany_syntaxhighlighter/syntaxhighlighter" template="plugincompany/syntaxhighlighter/syntaxhighlighter.phtml"/>
         </reference>
     </plugincompany_codemirror>
+
+    <!-- clever CMS -->
+    <adminhtml_cms_page_index>
+        <reference name="head">
+            <action method="addJs">
+                <script>plugincompany/jquerynoconflict.js</script>
+            </action>
+            <action method="addJs">
+                <script>plugincompany/codemirror/codemirror-compressed.js</script>
+            </action>
+            <action method="addItem">
+                <type>js_css</type>
+                <name>plugincompany/codemirror/show-hint.css</name>
+            </action>
+            <action method="addItem">
+                <type>js_css</type>
+                <name>plugincompany/codemirror/codemirror.css</name>
+            </action>
+            <action method="addItem">
+                <type>js_css</type>
+                <name>plugincompany/codemirror/fullscreen.css</name>
+            </action>
+        </reference>
+        <reference name="before_body_end" after="-">
+            <block type="plugincompany_syntaxhighlighter/syntaxhighlighter" template="plugincompany/syntaxhighlighter/syntaxhighlighter.phtml"/>
+        </reference>
+    </adminhtml_cms_page_index>
 </layout>
