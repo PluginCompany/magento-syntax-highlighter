@@ -52,7 +52,7 @@
             <show_in_store>1</show_in_store>
             <groups>
                 <plugincompany_syntaxhighlighter_group translate="label">
-                    <label>Configure Admin Syntax Highlighting</label>
+                    <label>Enable Syntax Highlighting</label>
                     <frontend_type>text</frontend_type>
                     <sort_order>0</sort_order>
                     <show_in_default>1</show_in_default>
@@ -61,7 +61,7 @@
                     <expanded>1</expanded>
                     <fields>
                         <enabled translate="label">
-                            <label>Enable Syntax Highlighter</label>
+                            <label>Enable the extension</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>-1</sort_order>
@@ -70,7 +70,7 @@
                             <show_in_store>1</show_in_store>
                         </enabled>
                         <cms_page translate="label">
-                            <label>Enable for CMS Pages</label>
+                            <label>Enable for CMS pages</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>1</sort_order>
@@ -79,7 +79,7 @@
                             <show_in_store>1</show_in_store>
                         </cms_page>
                         <cms_block translate="label">
-                            <label>Enable for CMS Blocks</label>
+                            <label>Enable for CMS blocks</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>2</sort_order>
@@ -88,7 +88,7 @@
                             <show_in_store>1</show_in_store>
                         </cms_block>
                         <product translate="label">
-                            <label>Enable for Products</label>
+                            <label>Enable for products</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>3</sort_order>
@@ -97,7 +97,7 @@
                             <show_in_store>1</show_in_store>
                         </product>
                         <product_fields translate="label">
-                            <label>Enabled Product Fields</label>
+                            <label>Enabled product attributes</label>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>Plugincompany_Syntaxhighlighter_Model_System_Config_Source_Producttextfields</source_model>
                             <sort_order>4</sort_order>
@@ -108,7 +108,7 @@
                             <depends><product>1</product></depends>
                         </product_fields>
                         <categories translate="label">
-                            <label>Enable for Categories</label>
+                            <label>Enable for categories</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>5</sort_order>
@@ -117,7 +117,7 @@
                             <show_in_store>1</show_in_store>
                         </categories>
                         <category_fields translate="label">
-                            <label>Enabled Category Fields</label>
+                            <label>Enabled category attributes</label>
                             <frontend_type>multiselect</frontend_type>
                             <source_model>Plugincompany_Syntaxhighlighter_Model_System_Config_Source_Categorytextfields</source_model>
                             <sort_order>6</sort_order>
@@ -128,7 +128,7 @@
                             <depends><categories>1</categories></depends>
                         </category_fields>
                         <newsletter translate="label">
-                            <label>Enable for Newsletter Templates</label>
+                            <label>Enable for newsletter templates</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>8</sort_order>
@@ -137,7 +137,7 @@
                             <show_in_store>1</show_in_store>
                         </newsletter>
                         <transactional translate="label">
-                            <label>Enable for Transactional Emails</label>
+                            <label>Enable for transactional emails</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
                             <sort_order>9</sort_order>
